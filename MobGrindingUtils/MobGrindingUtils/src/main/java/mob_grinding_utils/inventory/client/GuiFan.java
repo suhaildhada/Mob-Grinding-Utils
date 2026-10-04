@@ -1,5 +1,6 @@
 package mob_grinding_utils.inventory.client;
 
+import mob_grinding_utils.blocks.BlockFan;
 import mob_grinding_utils.inventory.server.ContainerFan;
 import mob_grinding_utils.network.BEGuiClick;
 import mob_grinding_utils.tile.TileEntityFan;
@@ -17,6 +18,7 @@ import javax.annotation.Nonnull;
 public class GuiFan extends MGUScreen<ContainerFan> {
 	protected final ContainerFan container;
 	private final TileEntityFan tile;
+	private GuiMGUButton fanToggleButton;
 
 	public GuiFan(ContainerFan container, Inventory inventory, Component title) {
 		super(container, inventory, title, RL.mgu("textures/gui/fan_gui.png"));
@@ -29,16 +31,26 @@ public class GuiFan extends MGUScreen<ContainerFan> {
 	public void init() {
 		super.init();
 
-		addRenderableWidget(new GuiMGUButton(leftPos + 54, topPos + 42, GuiMGUButton.Size.LARGE, 0, Component.empty(), (button) -> {
+		addRenderableWidget(new GuiMGUButton(leftPos + 12, topPos + 42, GuiMGUButton.Size.LARGE, 0, Component.empty(), (button) -> {
 			PacketDistributor.sendToServer(new BEGuiClick(tile.getBlockPos(), 0));
 			tile.showRenderBox = !tile.showRenderBox;
 		}));
+		fanToggleButton = new GuiMGUButton(leftPos + 88, topPos + 42, GuiMGUButton.Size.LARGE, 1, Component.empty(), (button) ->
+			PacketDistributor.sendToServer(new BEGuiClick(tile.getBlockPos(), 1)));
+		addRenderableWidget(fanToggleButton);
+	}
+
+	@Override
+	public void render(@Nonnull GuiGraphics gg, int mouseX, int mouseY, float partialTicks) {
+		boolean active = tile.getLevel().getBlockState(tile.getBlockPos()).getValue(BlockFan.ACTIVE);
+		fanToggleButton.setMessage(Component.literal(active ? "Turn Off" : "Turn On"));
+		super.render(gg, mouseX, mouseY, partialTicks);
 	}
 
 	@Override
 	protected void renderLabels(@Nonnull GuiGraphics gg, int mouseX, int mouseY) {
 		super.renderLabels(gg, mouseX, mouseY);
 
-		gg.drawString(font, !tile.showRenderBox ? "Show Area" : "Hide Area", imageWidth - 88 - font.width(!tile.showRenderBox ? "Show Area" : "Hide Area") / 2.0f, 46, 14737632, true);
+		gg.drawString(font, !tile.showRenderBox ? "Show Area" : "Hide Area", 46 - font.width(!tile.showRenderBox ? "Show Area" : "Hide Area") / 2.0f, 46, 14737632, true);
 	}
 }
