@@ -12,8 +12,8 @@ public class MGUClientPackets {
     public static void HandleChickenSync(ChickenSyncPacket message) {
         Level world = Minecraft.getInstance().level;
 
-        if (world == null)
-            return;
+        if (world == null) {
+        }
 
         else if (world.isClientSide) {
             LivingEntity chicken = (Chicken) world.getEntity(message.chickenID());

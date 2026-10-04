@@ -21,7 +21,7 @@ public class GuiSaw extends MGUScreen<ContainerSaw> {
 	}
 
 	@Override
-	public void init() {
+    public void init() {
 		super.init();
 		toggleButton = new GuiMGUButton(leftPos + 58, topPos + 36, GuiMGUButton.Size.WIDE_SHORT, 0, Component.empty(), (button) ->
 			PacketDistributor.sendToServer(new BEGuiClick(container.saw.getBlockPos(), 0)));

@@ -36,9 +36,8 @@ public class ItemSolidXP extends Item {
 	@Nonnull
 	@Override
 	public ItemStack finishUsingItem(@Nonnull ItemStack stack, @Nonnull Level world, @Nonnull LivingEntity entity) {
-		if (entity instanceof Player) {
-			Player player = (Player) entity;
-			if (xpValue > 0)
+		if (entity instanceof Player player) {
+            if (xpValue > 0)
 				if (!world.isClientSide) {
 					if (stack.getCount() > 1 && entity.isShiftKeyDown()) {
 						TileEntitySinkTank.addPlayerXP(player, xpValue * stack.getCount());

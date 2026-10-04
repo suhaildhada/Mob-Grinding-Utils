@@ -61,8 +61,8 @@ public class TileEntityAbsorptionHopper extends TileEntityInventoryHelper implem
 			case 0,1,2,3,4,5 -> toggleMode(Direction.values()[buttonID]);
 			case 6 -> toggleRenderBox();
 			case 7,8,9,10,11,12 -> toggleOffset(buttonID);
-		};
-		updateBlock();
+		}
+        updateBlock();
 	}
 
 	public IItemHandler getItemHandler(@Nullable Direction side) {
@@ -235,9 +235,8 @@ public class TileEntityAbsorptionHopper extends TileEntityInventoryHelper implem
 								}
 							}
 						});
-					} else if (otherTile instanceof Container) {
-						Container iinventory = (Container) otherTile;
-						if (tile.isInventoryFull(iinventory, facing))
+					} else if (otherTile instanceof Container iinventory) {
+                        if (tile.isInventoryFull(iinventory, facing))
 							break;
 						else if (level.getGameTime() % 8 == 0) {
 							for (int i = 0; i < tile.getContainerSize(); ++i) {
@@ -300,7 +299,7 @@ public class TileEntityAbsorptionHopper extends TileEntityInventoryHelper implem
 	}
 
 	public List<ItemEntity> getCaptureItems() {
-		return getLevel().<ItemEntity>getEntitiesOfClass(ItemEntity.class, getAABBWithModifiers(), EntitySelector.ENTITY_STILL_ALIVE);
+		return getLevel().getEntitiesOfClass(ItemEntity.class, getAABBWithModifiers(), EntitySelector.ENTITY_STILL_ALIVE);
 	}
 
 	public boolean captureDroppedXP() {
@@ -317,7 +316,7 @@ public class TileEntityAbsorptionHopper extends TileEntityInventoryHelper implem
 	}
 
 	public List<ExperienceOrb> getCaptureXP() {
-		return getLevel().<ExperienceOrb>getEntitiesOfClass(ExperienceOrb.class, getAABBWithModifiers(), EntitySelector.ENTITY_STILL_ALIVE);
+		return getLevel().getEntitiesOfClass(ExperienceOrb.class, getAABBWithModifiers(), EntitySelector.ENTITY_STILL_ALIVE);
 	}
 
 	public AABB getAABBWithModifiers() {
@@ -380,9 +379,8 @@ public class TileEntityAbsorptionHopper extends TileEntityInventoryHelper implem
 	}
 
 	private boolean isInventoryFull(Container inventoryIn, Direction side) {
-		if (inventoryIn instanceof WorldlyContainer) {
-			WorldlyContainer isidedinventory = (WorldlyContainer) inventoryIn;
-			int[] aint = isidedinventory.getSlotsForFace(side);
+		if (inventoryIn instanceof WorldlyContainer isidedinventory) {
+            int[] aint = isidedinventory.getSlotsForFace(side);
 
 			for (int k : aint) {
 				ItemStack itemstack1 = isidedinventory.getItem(k);
@@ -405,9 +403,8 @@ public class TileEntityAbsorptionHopper extends TileEntityInventoryHelper implem
 	}
 
 	public static ItemStack putStackInInventoryAllSlots(Container inventory, ItemStack stack, @Nullable Direction facing) {
-		if (inventory instanceof WorldlyContainer && facing != null && !(inventory instanceof TileEntityAbsorptionHopper) && inventory.canPlaceItem(0, stack.copy())) {
-			WorldlyContainer isidedinventory = (WorldlyContainer)inventory;
-			int[] aint = isidedinventory.getSlotsForFace(facing);
+		if (inventory instanceof WorldlyContainer isidedinventory && facing != null && !(inventory instanceof TileEntityAbsorptionHopper) && inventory.canPlaceItem(0, stack.copy())) {
+            int[] aint = isidedinventory.getSlotsForFace(facing);
 			for (int k = 0; k < aint.length && !stack.isEmpty(); ++k)
 				stack = insertStack(inventory, stack, aint[k], facing);
 		} else {
@@ -425,7 +422,7 @@ public class TileEntityAbsorptionHopper extends TileEntityInventoryHelper implem
 			return false;
 		} else {
 			ItemStack itemstack = itemIn.getItem().copy();
-			ItemStack itemstack1 = putStackInInventoryAllSlots(inventoryIn, itemstack, (Direction) null);
+			ItemStack itemstack1 = putStackInInventoryAllSlots(inventoryIn, itemstack, null);
 
 			if (!itemstack1.isEmpty()) {
 				itemIn.setItem(itemstack1);
@@ -459,7 +456,7 @@ public class TileEntityAbsorptionHopper extends TileEntityInventoryHelper implem
 	}
 
 	private static boolean canCombine(ItemStack stack1, ItemStack stack2) {
-		return stack1.getItem() != stack2.getItem() ? false : (stack1.getDamageValue() != stack2.getDamageValue() ? false : (stack1.getCount() > stack1.getMaxStackSize() ? false : ItemStack.isSameItemSameComponents(stack1, stack2)));
+		return stack1.getItem() == stack2.getItem() && (stack1.getDamageValue() == stack2.getDamageValue() && (stack1.getCount() <= stack1.getMaxStackSize() && ItemStack.isSameItemSameComponents(stack1, stack2)));
 	}
 
 // FLUID & INVENTORY CAPABILITIES STUFF

@@ -231,7 +231,7 @@ public class MobGrindingUtils {
 		}, ModBlocks.SAW.getItem());
 
 		event.registerFluidType(new IClientFluidTypeExtensions() {
-			ResourceLocation texture = RL.mgu("block/fluid_xp");
+			final ResourceLocation texture = RL.mgu("block/fluid_xp");
 			@Override
 			public ResourceLocation getStillTexture() {
 				return texture;

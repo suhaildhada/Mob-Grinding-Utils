@@ -63,7 +63,7 @@ public class BlockDreadfulDirt extends BlockDirtSpawner {
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (shouldCatchFire((Level) level, pos) || shouldSpawnMob((Level) level, pos))
+		if (shouldCatchFire(level, pos) || shouldSpawnMob(level, pos))
 			level.scheduleTick(pos, this, Mth.nextInt(level.getRandom(), 20, 60));
 	}
 
@@ -131,9 +131,9 @@ public class BlockDreadfulDirt extends BlockDirtSpawner {
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, Level level, BlockPos pos, RandomSource rand) {
 		for (int i = 0; i < 4; ++i) {
-			double d0 = (double) ((float) pos.getX() + rand.nextFloat());
-			double d1 = (double) ((float) pos.getY() + rand.nextFloat());
-			double d2 = (double) ((float) pos.getZ() + rand.nextFloat());
+			double d0 = (float) pos.getX() + rand.nextFloat();
+			double d1 = (float) pos.getY() + rand.nextFloat();
+			double d2 = (float) pos.getZ() + rand.nextFloat();
 			double d3 = ((double) rand.nextFloat() - 0.5D) * 0.5D;
 			double d4 = ((double) rand.nextFloat() - 0.5D) * 0.5D;
 			double d5 = ((double) rand.nextFloat() - 0.5D) * 0.5D;

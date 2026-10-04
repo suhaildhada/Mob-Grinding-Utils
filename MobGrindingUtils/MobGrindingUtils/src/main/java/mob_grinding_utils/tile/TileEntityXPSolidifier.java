@@ -335,7 +335,7 @@ public class TileEntityXPSolidifier extends BlockEntity implements MenuProvider,
 	}
 
 	private static boolean canCombine(ItemStack stack1, ItemStack stack2) {
-		return stack1.getItem() != stack2.getItem() ? false : (stack1.getDamageValue() != stack2.getDamageValue() ? false : (stack1.getCount() > stack1.getMaxStackSize() ? false : ItemStack.isSameItemSameComponents(stack1, stack2)));
+		return stack1.getItem() == stack2.getItem() && (stack1.getDamageValue() == stack2.getDamageValue() && (stack1.getCount() <= stack1.getMaxStackSize() && ItemStack.isSameItemSameComponents(stack1, stack2)));
 	}
 
 	@Override

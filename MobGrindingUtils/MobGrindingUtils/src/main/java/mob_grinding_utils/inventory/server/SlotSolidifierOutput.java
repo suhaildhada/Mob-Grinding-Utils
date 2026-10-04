@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 
 public class SlotSolidifierOutput extends SlotItemHandler {
     @SuppressWarnings("unused")
-    private AbstractContainerMenu container;
+    private final AbstractContainerMenu container;
 
     public SlotSolidifierOutput(IItemHandler itemHandler, int index, int xPosition, int yPosition, AbstractContainerMenu container) {
         super(itemHandler, index, xPosition, yPosition);

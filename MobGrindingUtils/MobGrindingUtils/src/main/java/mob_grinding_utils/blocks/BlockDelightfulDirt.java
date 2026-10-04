@@ -61,7 +61,7 @@ public class BlockDelightfulDirt extends BlockDirtSpawner {
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (shouldSnowCap((Level) level, pos) || shouldSpawnMob((Level) level, pos))
+		if (shouldSnowCap(level, pos) || shouldSpawnMob(level, pos))
 			level.scheduleTick(pos, this, Mth.nextInt(level.random, 20, 60));
 	}
 
@@ -155,9 +155,9 @@ public class BlockDelightfulDirt extends BlockDirtSpawner {
 	public void animateTick(@Nonnull BlockState stateIn, Level level, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
 		if(level.getGameTime()%3 == 0 && level.getBlockState(pos.above()).isAir()) {
 			for (int i = 0; i < 4; ++i) {
-				double d0 = (double) ((float) pos.getX( ));
-				double d1 = (double) ((float) pos.getY() + 1D);
-				double d2 = (double) ((float) pos.getZ());
+				double d0 = (float) pos.getX( );
+				double d1 = (float) pos.getY() + 1D;
+				double d2 = (float) pos.getZ();
 				double d3 = ((double) rand.nextFloat() - 0.5D) * 0.5D;
 				double d4 = ((double) rand.nextFloat() - 0.5D) * 0.5D;
 				double d5 = ((double) rand.nextFloat() - 0.5D) * 0.5D;

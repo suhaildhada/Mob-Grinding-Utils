@@ -41,7 +41,7 @@ public class ParticleFluidXP extends TextureSheetParticle {
         xo = x;
         yo = y;
         zo = z;
-        yd -= (double) gravity;
+        yd -= gravity;
         move(xd, yd, zd);
         yd *= 0.9800000190734863D;
         if (this.age++ >= this.lifetime)

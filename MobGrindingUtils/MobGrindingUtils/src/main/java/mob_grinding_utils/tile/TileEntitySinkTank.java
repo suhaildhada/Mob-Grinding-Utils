@@ -51,7 +51,7 @@ public class TileEntitySinkTank extends TileEntityTank {
 	}
 
 	public List<Player> getCaptureXP(Level world, double x, double y, double z) {
-		return world.<Player>getEntitiesOfClass(Player.class, new AABB(x - 0.45D, y - 0.5D, z - 0.45D, x + 0.45D, y + 1.03D, z + 0.45D), EntitySelector.ENTITY_STILL_ALIVE);
+		return world.getEntitiesOfClass(Player.class, new AABB(x - 0.45D, y - 0.5D, z - 0.45D, x + 0.45D, y + 1.03D, z + 0.45D), EntitySelector.ENTITY_STILL_ALIVE);
 	}
 
 	public static void addPlayerXP(Player player, int amount) {

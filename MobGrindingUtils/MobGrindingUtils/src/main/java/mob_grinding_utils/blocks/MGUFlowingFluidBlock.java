@@ -45,10 +45,10 @@ public class MGUFlowingFluidBlock extends LiquidBlock {
 			float zz = (float) pos.getZ() + 0.5F;
 			float fixedOffset = 0.25F;
 			float randomOffset = rand.nextFloat() * 0.6F - 0.3F;
-			world.addParticle(MobGrindingUtils.PARTICLE_FLUID_XP.get(), false, (double) (xx - fixedOffset), (double) pos.getY() + 0.8D, (double) (zz + randomOffset), 0.0D, 0.0D, 0.0D);
-			world.addParticle(MobGrindingUtils.PARTICLE_FLUID_XP.get(), false, (double) (xx + fixedOffset), (double) pos.getY() + 0.8D, (double) (zz + randomOffset), 0.0D, 0.0D, 0.0D);
-			world.addParticle(MobGrindingUtils.PARTICLE_FLUID_XP.get(), false, (double) (xx + randomOffset), (double) pos.getY() + 0.8D, (double) (zz - fixedOffset), 0.0D, 0.0D, 0.0D);
-			world.addParticle(MobGrindingUtils.PARTICLE_FLUID_XP.get(), false, (double) (xx + randomOffset), (double) pos.getY() + 0.8D, (double) (zz + fixedOffset), 0.0D, 0.0D, 0.0D);
+			world.addParticle(MobGrindingUtils.PARTICLE_FLUID_XP.get(), false, xx - fixedOffset, (double) pos.getY() + 0.8D, zz + randomOffset, 0.0D, 0.0D, 0.0D);
+			world.addParticle(MobGrindingUtils.PARTICLE_FLUID_XP.get(), false, xx + fixedOffset, (double) pos.getY() + 0.8D, zz + randomOffset, 0.0D, 0.0D, 0.0D);
+			world.addParticle(MobGrindingUtils.PARTICLE_FLUID_XP.get(), false, xx + randomOffset, (double) pos.getY() + 0.8D, zz - fixedOffset, 0.0D, 0.0D, 0.0D);
+			world.addParticle(MobGrindingUtils.PARTICLE_FLUID_XP.get(), false, xx + randomOffset, (double) pos.getY() + 0.8D, zz + fixedOffset, 0.0D, 0.0D, 0.0D);
 		}
 	}
 }

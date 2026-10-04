@@ -146,7 +146,7 @@ public class ContainerSaw extends AbstractContainerMenu {
 				slotIndex = startIndex;
 
 			while (!reverseDirection && slotIndex < endIndex || reverseDirection && slotIndex >= startIndex) {
-				slot = (Slot) this.slots.get(slotIndex);
+				slot = this.slots.get(slotIndex);
 				slotstack = slot.getItem();
 				if (slotstack.isEmpty() && slot.mayPlace(stack) && slot.getMaxStackSize() < stack.getCount()) {
 					ItemStack copy = stack.copy();

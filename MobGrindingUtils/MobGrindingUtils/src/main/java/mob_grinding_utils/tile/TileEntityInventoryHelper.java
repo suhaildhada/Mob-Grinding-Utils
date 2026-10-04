@@ -20,7 +20,7 @@ public abstract class TileEntityInventoryHelper extends BlockEntity implements W
 
 	public TileEntityInventoryHelper(BlockEntityType<?> tileEntityTypeIn, int invtSize, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
-		inventory = NonNullList.<ItemStack>withSize(invtSize, ItemStack.EMPTY);
+		inventory = NonNullList.withSize(invtSize, ItemStack.EMPTY);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public abstract class TileEntityInventoryHelper extends BlockEntity implements W
 	@Override
 	public void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
 		super.loadAdditional(compound, registries);
-		inventory = NonNullList.<ItemStack>withSize(this.getContainerSize(), ItemStack.EMPTY);
+		inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 		if (compound.contains("Items", 9))
 			ContainerHelper.loadAllItems(compound, inventory, registries);
 	}
