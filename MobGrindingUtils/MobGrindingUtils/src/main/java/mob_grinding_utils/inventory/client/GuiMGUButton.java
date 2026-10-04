@@ -50,7 +50,7 @@ public class GuiMGUButton extends Button {
     
     public ResourceLocation getTextures(Size size) {
         return switch (size) {
-            case SMALL, MEDIUM, LARGE -> TEXTURES;
+            case SMALL, MEDIUM, LARGE, WIDE, WIDE_SHORT -> TEXTURES;
             case SOLIDIFIER, SOLIDIFIER_ON -> SOLIDIFIER_TEXTURES;
         };
     }
@@ -59,6 +59,8 @@ public class GuiMGUButton extends Button {
         SMALL(16 , 16, 103, 228),
         MEDIUM(32, 16, 0, 228),
         LARGE(68, 16, 33, 228),
+        WIDE(60, 16, 37, 228),
+        WIDE_SHORT(60, 12, 37, 230),
         SOLIDIFIER(34, 16, 178, 92),
         SOLIDIFIER_ON(20, 16, 178, 110);
 

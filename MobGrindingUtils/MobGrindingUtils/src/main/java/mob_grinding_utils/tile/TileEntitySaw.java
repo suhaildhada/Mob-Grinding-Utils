@@ -7,6 +7,7 @@ import mob_grinding_utils.blocks.BlockSaw;
 import mob_grinding_utils.components.MGUComponents;
 import mob_grinding_utils.inventory.server.ContainerSaw;
 import mob_grinding_utils.items.ItemSawUpgrade;
+import mob_grinding_utils.network.BEGuiClick;
 import mob_grinding_utils.util.FakePlayerHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -38,7 +39,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.UUID;
 
-public class TileEntitySaw extends TileEntityInventoryHelper implements MenuProvider {
+public class TileEntitySaw extends TileEntityInventoryHelper implements MenuProvider, BEGuiClickable {
 
 	public boolean active;
 	public int animationTicks, prevAnimationTicks;
@@ -68,14 +69,20 @@ public class TileEntitySaw extends TileEntityInventoryHelper implements MenuProv
 	public static <T extends BlockEntity > void serverTick(Level level, BlockPos blockPos, BlockState blockState, T t) {
 		if (t instanceof TileEntitySaw tile) {
 			if (level.getGameTime() % 10 == 0 && level.getBlockState(blockPos).getBlock() instanceof BlockSaw)
-				if (level.getBlockState(blockPos).getValue(BlockSaw.POWERED))
+				if (tile.active)
 					tile.activateBlock();
 		}
 	}
 
 	public void setActive(boolean isActive) {
 		active = isActive;
-		getLevel().sendBlockUpdated(worldPosition, getLevel().getBlockState(worldPosition), getLevel().getBlockState(worldPosition), 3);
+		BlockState state = getLevel().getBlockState(worldPosition);
+		if (state.getBlock() instanceof BlockSaw && state.getValue(BlockSaw.POWERED) != isActive) {
+			getLevel().setBlock(worldPosition, state.setValue(BlockSaw.POWERED, isActive), 3);
+		} else {
+			getLevel().sendBlockUpdated(worldPosition, state, state, 3);
+		}
+		setChanged();
 	}
 
 	protected void activateBlock() {
@@ -104,14 +111,12 @@ public class TileEntitySaw extends TileEntityInventoryHelper implements MenuProv
 		fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, tempSword);
 		fakePlayer.detectEquipmentUpdates();
 
-        for (Entity entity : list) {
-            if (entity != null) {
-                if (entity instanceof LivingEntity) {
-                    fakePlayer.attack(entity);
-					fakePlayer.attackStrengthTicker = 100;
-                }
-            }
-        }
+		for (Entity entity : list) {
+			if (entity instanceof LivingEntity && !(entity instanceof Player)) {
+				fakePlayer.attack(entity);
+				fakePlayer.attackStrengthTicker = 100;
+			}
+		}
 
 		fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
 	}
@@ -241,5 +246,12 @@ public class TileEntitySaw extends TileEntityInventoryHelper implements MenuProv
 
 	public void setPlacer(Player player) {
 		placer = player.getUUID();
+	}
+
+	@Override
+	public void buttonClicked(int buttonID) {
+		if (buttonID == 0) {
+			setActive(!active);
+		}
 	}
 }

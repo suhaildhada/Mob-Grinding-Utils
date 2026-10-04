@@ -1,12 +1,9 @@
 package mob_grinding_utils.blocks;
 
 import com.mojang.serialization.MapCodec;
-import mob_grinding_utils.ModBlocks;
 import mob_grinding_utils.tile.TileEntitySaw;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.EntityBlock;
@@ -82,17 +78,14 @@ public class BlockSaw extends DirectionalBlock implements EntityBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		Direction direction = context.getClickedFace();
-		return this.defaultBlockState().setValue(FACING, direction).setValue(POWERED, context.getLevel().hasNeighborSignal(context.getClickedPos()));
+		return this.defaultBlockState().setValue(FACING, direction).setValue(POWERED, false);
 	}
 
 	@Override
-	  public void setPlacedBy(@Nonnull Level world, @Nonnull BlockPos pos, BlockState state, @Nullable LivingEntity placer, @Nonnull ItemStack stack) {
+	public void setPlacedBy(@Nonnull Level world, @Nonnull BlockPos pos, BlockState state, @Nullable LivingEntity placer, @Nonnull ItemStack stack) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (state.getValue(POWERED) && be instanceof TileEntitySaw tile) {
-			tile.setActive(true);
-			if (placer instanceof Player player) {
-				tile.setPlacer(player);
-			}
+		if (be instanceof TileEntitySaw tile && placer instanceof Player player) {
+			tile.setPlacer(player);
 		}
 	}
 
@@ -124,38 +117,4 @@ public class BlockSaw extends DirectionalBlock implements EntityBlock {
 		}
 	}
 
-	@Override
-	public void neighborChanged(@Nonnull BlockState state, Level world, @Nonnull BlockPos pos, @Nonnull Block block, @Nonnull BlockPos fromPos, boolean isMoving) {
-		if (!world.isClientSide) {
-			TileEntitySaw tile = (TileEntitySaw) world.getBlockEntity(pos);
-			boolean flag = state.getValue(POWERED);
-			if (flag != world.hasNeighborSignal(pos)) {
-				if (flag)
-					world.scheduleTick(pos, this, 4);
-				else {
-					world.setBlock(pos, state.cycle(POWERED), 2);
-					if (tile != null)
-						tile.setActive(!state.getValue(POWERED));
-				}
-
-			}
-		}
-	}
-
-	@Override
-	public void tick(@Nonnull BlockState state, ServerLevel world, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
-		if (!world.isClientSide) {
-			TileEntitySaw tile = (TileEntitySaw) world.getBlockEntity(pos);
-			if (state.getValue(POWERED) && !world.hasNeighborSignal(pos)) {
-				world.setBlock(pos, state.cycle(POWERED), 2);
-				if (tile != null)
-					tile.setActive(!state.getValue(POWERED));
-			}
-		}
-	}
-
-	@Override
-	public boolean getWeakChanges(BlockState state, LevelReader world, BlockPos pos) {
-		return state.is(ModBlocks.SAW.getBlock());
-	}
 }
